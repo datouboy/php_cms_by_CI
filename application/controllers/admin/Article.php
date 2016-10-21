@@ -91,7 +91,7 @@ class Article extends CI_Controller {
 	}
 
 	//新闻列表
-	public function news_list()
+	public function news_list($column='all', $goMember='all', $goShow='all', $searchText='all')
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
@@ -103,11 +103,38 @@ class Article extends CI_Controller {
 		//获取导航栏数组
 		$data['navArray'] = $this->_get_nav_list();
 
+		$data['urlInfo'] = array(
+			'column' => $column,
+			'goMember' => $goMember,
+			'goShow' => $goShow,
+			'searchText' => urldecode(urldecode($searchText))
+		);
+
+		$where = array();
+		if($column!='all'){
+			$where['ColumnID'] = $column;
+		}
+		if($goMember!='all'){
+			$where['Power'] = $goMember;
+		}
+		if($goShow!='all'){
+			$where['Showpage'] = $goShow;
+		}
+		if($searchText!='all' && $searchText!='' && $searchText!=null){
+			$searchText = urldecode(urldecode($searchText));
+			$whereText = '';
+			foreach ($where as $key => $value) {
+				$whereText .= '`'.$key.'` = "'.$value.'" and';
+			}
+			$whereText .= '`Title` like "%'.$searchText.'%"';
+			$where = $whereText;
+		}
+
 		$this->load->library('pagination');//加载翻页类
 		$config = $this->_page_fen();
-		$config['base_url'] = $data['siteurl'] . 'admin/article/news_list/';
-		$config['total_rows'] = $this->Nommon_m->select_count('newslist');
-		$config['uri_segment'] = 4;
+		$config['base_url'] = $data['siteurl'] . 'admin/article/news_list/'.$column.'/'.$goMember.'/'.$goShow.'/'.$data['urlInfo']['searchText'].'/';
+		$config['total_rows'] = $this->Nommon_m->select_count('newslist', $where);
+		$config['uri_segment'] = 8;
 		$this->pagination->initialize($config); 
 		$data['pagefen'] = $this->pagination->create_links();
 
@@ -121,7 +148,7 @@ class Article extends CI_Controller {
 				'need'   => 'ColumnID',//原始表字段名
 			)
 		);
-		$data['articleArray'] = $this->Nommon_m->select_list('newslist', $select, '', $config['per_page'], $this->uri->segment(4), 'ID DESC', $otherInfo);
+		$data['articleArray'] = $this->Nommon_m->select_list('newslist', $select, $where, $config['per_page'], $this->uri->segment(8), 'ID DESC', $otherInfo);
 
 		$this->load->view('admin/news_table', $data);
 	}
@@ -204,6 +231,28 @@ class Article extends CI_Controller {
 		$param['AdminID']   = $this->session->userdata('AdminID');
 
 		$this->Nommon_m->updata('newslist', array('ID'=>$id), $param);
+
+		redirect(base_url().'admin/article/news_list/');
+	}
+
+	//删除新闻
+	public function news_del($id)
+	{
+		if(!$this->_loginIn()){redirect($this->loginPage);}
+		header('Content-Type: text/html; charset=utf-8');
+		$this->load->model('Nommon_m');
+
+		//删除封面图
+		$newsPic = $this->Nommon_m->select_content('newslist', 'Pic', $id);
+		$newsPic = $newsPic['Pic'];
+
+		$imgUrl   = dirname(dirname(dirname(dirname(__FILE__)))).'/images/admin_upload/'.$newsPic;
+		$imgUrl_s = dirname(dirname(dirname(dirname(__FILE__)))).'/images/admin_upload/'.preg_replace("#\_s.#", "_sf.", $newsPic);
+		@unlink($imgUrl);
+		@unlink($imgUrl_s);
+
+		//删除新闻
+		$this->Nommon_m->del('newslist', array('ID'=>$id));
 
 		redirect(base_url().'admin/article/news_list/');
 	}

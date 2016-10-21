@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-10-20 17:19:03
+-- Generation Time: 2016-10-21 15:20:17
 -- 服务器版本： 5.5.47-MariaDB
 -- PHP Version: 5.5.9
 
@@ -127,15 +127,32 @@ CREATE TABLE IF NOT EXISTS `semi_newslist` (
   `NewsTime` int(10) NOT NULL COMMENT '新闻发布时间',
   `EditTime` int(10) NOT NULL COMMENT '最后编辑时间',
   `AdminID` int(5) NOT NULL COMMENT '最后编辑管理员ID'
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='新闻列表';
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='新闻列表';
 
 --
 -- 转存表中的数据 `semi_newslist`
 --
 
 INSERT INTO `semi_newslist` (`ID`, `ColumnID`, `Title`, `Pic`, `Article`, `Introduced`, `Focus`, `Hot`, `Power`, `Showpage`, `Templet`, `NewsTime`, `EditTime`, `AdminID`) VALUES
-(1, 1, '哈哈哈哈', '5c22bf87fd78dc1d50d15cbf875d69c4_s.jpg', '<p>1qewqweqweqweqweqqqqq123123123</p>', 'qqqqqq', 2, 2, 2, 2, 'index_about', -172800, 1476954324, 1),
-(2, 2, '测试新闻测试新闻', '01ada4bbe8cf7b20a175f2ddbe1e9fda_s.jpg', '太太太太太1231231231231231231231231231231', '123123123', 2, 2, 1, 1, 'index_about', 1476892800, 1476954338, 1);
+(2, 2, '测试新闻测试新闻', '01ada4bbe8cf7b20a175f2ddbe1e9fda_s.jpg', '太太太太太1231231231231231231231231231231', '123123123', 2, 2, 1, 1, 'index_about', 1476892800, 1476954338, 1),
+(3, 21, 'cececece', '837d7d178411f6ada5ba0f7bdfb1dd55_s.jpg', '<p><img src="/images/admin_upload/c79f5d33dd80c0ba26ff1a1456867bd2.jpg" style="width: 600px;">qweqweqwe</p>', '23123123123', 1, 1, 2, 2, 'index_about', 1475424000, 1477021304, 1),
+(5, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(6, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(7, 2, '测试新闻测试新闻', '01ada4bbe8cf7b20a175f2ddbe1e9fda_s.jpg', '太太太太太1231231231231231231231231231231', '123123123', 2, 2, 1, 1, 'index_about', 1476892800, 1476954338, 1),
+(8, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(9, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(10, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(11, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(12, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(13, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(14, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(15, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(16, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(17, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(18, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(19, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(20, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 1, 1, 1, 1, 'index_about', 1475510400, 1477021658, 1),
+(21, 9, '测试测试测试测试测试', 'fcfc75641a40a6948d51b2094e00e346_s.jpg', '<p><img src="/images/admin_upload/19dff9ad30558316028a3802ceb7a956.jpg" style="width: 598px;">测试测试测试测试测试<br></p>', '测试测试测试测试', 2, 2, 2, 2, 'index_about', 1475510400, 1477030270, 1);
 
 -- --------------------------------------------------------
 
@@ -244,7 +261,7 @@ ALTER TABLE `semi_column`
 -- AUTO_INCREMENT for table `semi_newslist`
 --
 ALTER TABLE `semi_newslist`
-  MODIFY `ID` int(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `ID` int(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `semi_siteinfo`
 --

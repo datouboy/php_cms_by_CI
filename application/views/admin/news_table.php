@@ -27,6 +27,11 @@ function goSubmit(){
     $('#article_content').val($('.summernote').summernote('code'));
     $('#articleEdit').submit();
 }
+function delcfm(id){
+    if (confirm('确认删除？')) {
+        window.location='<?=$siteurl;?>admin/article/news_del/'+id+'/';
+    }
+}
 </script>
 <body class="gray-bg">
     <div id="wrapperContent" class="wrapper wrapper-content animated fadeInRight">
@@ -43,28 +48,49 @@ function goSubmit(){
                         <div id="tab-1" class="tab-pane active">
                             <div class="ibox-title">
                                 <div class="row">
-                                    <div class="col-sm-5 m-b-xs">
-                                        <select class="input-sm form-control input-s-sm inline">
-                                            <option value="0">请选择</option>
-                                            <option value="1">选项1</option>
-                                            <option value="2">选项2</option>
-                                            <option value="3">选项3</option>
+                                    <div class="col-sm-3 m-b-xs">
+                                        <select class="input-sm form-control input-s-sm inline" id="goColumnID">
+                                            <option value="no">按所属栏目检索</option>
+                                            <option value="all">所有栏目</option>
+                                            <?php foreach ($navArray as $key => $value):?>
+                                            <option value="<?=$value['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value['ID'] == $urlInfo['column']){echo ' selected=""';};?>><?=$value['column_title'];?></option>
+                                                <?php if($value['subMenu'] != false):?>
+                                                <?php foreach ($value['subMenu'] as $key_s => $value_s):?>
+                                                <option value="<?=$value_s['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_s['ID'] == $urlInfo['column']){echo ' selected=""';};?>>　　└ <?=$value_s['column_title'];?></option>
+                                                    <?php if($value_s['subMenu'] != false):?>
+                                                    <?php foreach ($value_s['subMenu'] as $key_ss => $value_ss):?>
+                                                    <option value="<?=$value_ss['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_ss['ID'] == $urlInfo['column']){echo ' selected=""';};?>>　　　　└ <?=$value_ss['column_title'];?></option>
+                                                    <?php endforeach;?>
+                                                    <?php endif;?>
+                                                <?php endforeach;?>
+                                                <?php endif;?>
+                                            <?php endforeach;?>
                                         </select>
                                     </div>
-                                    <div class="col-sm-4 m-b-xs">
+                                    <div class="col-sm-3 m-b-xs">
                                         <div data-toggle="buttons" class="btn-group">
-                                            <label class="btn btn-sm btn-white">
-                                                <input type="radio" id="option1" name="options">天</label>
-                                            <label class="btn btn-sm btn-white active">
-                                                <input type="radio" id="option2" name="options">周</label>
-                                            <label class="btn btn-sm btn-white">
-                                                <input type="radio" id="option3" name="options">月</label>
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goMember'] == 'all'){echo ' active';}?>">
+                                                <input type="radio" name="goMember" value="all">全部</label>
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goMember'] == 1){echo ' active';}?>">
+                                                <input type="radio" name="goMember" value="1">无限制</label>
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goMember'] == 2){echo ' active';}?>">
+                                                <input type="radio" name="goMember" value="2">仅会员</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 m-b-xs">
+                                        <div data-toggle="buttons" class="btn-group">
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goShow'] == 'all'){echo ' active';}?>">
+                                                <input type="radio" name="goShow" value="all">全部</label>
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goShow'] == 1){echo ' active';}?>">
+                                                <input type="radio" name="goShow" value="1">待发布</label>
+                                            <label class="btn btn-sm btn-white<?php if($urlInfo['goShow'] == 2){echo ' active';}?>">
+                                                <input type="radio" name="goShow" value="2">已发布</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group">
-                                            <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
-                                                <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                            <input id="searchText" type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                                <button id="searchMenu" type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +247,7 @@ function goSubmit(){
                                     <div class="hr-line-dashed"></div>
                                     <div class="form-group">
                                         <div class="col-sm-4 col-sm-offset-2">
-                                            <button class="btn btn-primary" type="submit">提交</button>
+                                            <button class="btn btn-primary" type="button" onclick="goSubmit();">提交</button>
                                             <button class="btn btn-white" type="resert">取消</button>
                                         </div>
                                     </div>
@@ -246,6 +272,24 @@ function goSubmit(){
                 $("#wrapperContent").removeClass("fadeInRight");
             },1000);
 
+            $('#goColumnID').change(function(){
+                if($(this).val() != 'no'){
+                    window.location = '<?=$siteurl;?>admin/article/news_list/'+$(this).val()+'/<?=$urlInfo['goMember'];?>/<?=$urlInfo['goShow'];?>/all/';
+                }
+            });
+
+            $('input[name=goMember]').change(function(){
+                window.location = '<?=$siteurl;?>admin/article/news_list/<?=$urlInfo['column'];?>/'+$(this).val()+'/<?=$urlInfo['goShow'];?>/<?=$urlInfo['searchText'];?>/';
+            });
+
+            $('input[name=goShow]').change(function(){
+                window.location = '<?=$siteurl;?>admin/article/news_list/<?=$urlInfo['column'];?>/<?=$urlInfo['goMember'];?>/'+$(this).val()+'/<?=$urlInfo['searchText'];?>/';
+            });
+
+            $('#searchMenu').click(function(){
+                window.location = '<?=$siteurl;?>admin/article/news_list/<?=$urlInfo['column'];?>/<?=$urlInfo['goMember'];?>/<?=$urlInfo['goShow'];?>/'+encodeURIComponent($('#searchText').val())+'/';
+            });
+
             $('#PicUpLoad').change(function(){
                 var fileObj = document.getElementById("PicUpLoad").files[0];
                 listImgUplad(fileObj, 'PicUpLoad');
@@ -254,12 +298,14 @@ function goSubmit(){
             $(".summernote").summernote({
                 lang:"zh-CN",
                 height: 350,
-                onImageUpload: function(files, editor, $editable) {
-                    UpladFile(files[0], editor, $editable);
+                callbacks: {
+                    onImageUpload: function(files) {
+                        UpladFile(files[0]);
+                    }
                 }
             });
         });
-        function UpladFile(file, editor, $editable){
+        function UpladFile(file){
             var fileObj = file;
             var FileController = siteUrl+"admin/fileupload/img_uoload/file/?timeStamp=" + new Date().getTime();//图片上传接口
             var form = new FormData();
@@ -270,7 +316,7 @@ function goSubmit(){
             xhr.onload = function () {
                 var data = new Function("return" + xhr.responseText)();//获取返回值
                 if(data.result){
-                    editor.insertImage($editable, data.img);
+                    $(".summernote").summernote('insertImage', data.img);
                 }else{
                     alert(data.error.replace(/<[^>]+>/g,""));
                 }

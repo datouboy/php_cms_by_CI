@@ -100,12 +100,14 @@ function goSubmit(){
             $(".summernote").summernote({
                 lang:"zh-CN",
                 height: 350,
-                onImageUpload: function(files, editor, $editable) {
-                    UpladFile(files[0], editor, $editable);
+                callbacks: {
+                    onImageUpload: function(files) {
+                        UpladFile(files[0]);
+                    }
                 }
             });
         });
-        function UpladFile(file, editor, $editable){
+        function UpladFile(file){
             var fileObj = file;
             var FileController = siteUrl+"admin/fileupload/img_uoload/file/?timeStamp=" + new Date().getTime();//图片上传接口
             var form = new FormData();
@@ -116,8 +118,7 @@ function goSubmit(){
             xhr.onload = function () {
                 var data = new Function("return" + xhr.responseText)();//获取返回值
                 if(data.result){
-                    //$(".summernote").summernote('insertImage', '/images/admin_upload/', data.img);
-                    editor.insertImage($editable, data.img);
+                    $(".summernote").summernote('insertImage', data.img);
                 }else{
                     alert(data.error.replace(/<[^>]+>/g,""));
                 }

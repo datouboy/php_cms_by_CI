@@ -29,7 +29,7 @@ function goSubmit(){
 }
 </script>
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
+    <div id="wrapperContent" class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
@@ -64,13 +64,13 @@ function goSubmit(){
                                 <div class="col-sm-10">
                                     <select class="form-control" name="ColumnID" required>
                                         <?php foreach ($navArray as $key => $value):?>
-                                        <option value="<?=$value['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value['ID'] == $news_info['ID']){echo ' selected=""';};?>><?=$value['column_title'];?></option>
+                                        <option value="<?=$value['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value['ID'] == $news_info['ColumnID']){echo ' selected=""';};?>><?=$value['column_title'];?></option>
                                             <?php if($value['subMenu'] != false):?>
                                             <?php foreach ($value['subMenu'] as $key_s => $value_s):?>
-                                            <option value="<?=$value_s['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_s['ID'] == $news_info['ID']){echo ' selected=""';};?>>　　└ <?=$value_s['column_title'];?></option>
+                                            <option value="<?=$value_s['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_s['ID'] == $news_info['ColumnID']){echo ' selected=""';};?>>　　└ <?=$value_s['column_title'];?></option>
                                                 <?php if($value_s['subMenu'] != false):?>
                                                 <?php foreach ($value_s['subMenu'] as $key_ss => $value_ss):?>
-                                                <option value="<?=$value_ss['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_ss['ID'] == $news_info['ID']){echo ' selected=""';};?>>　　　　└ <?=$value_ss['column_title'];?></option>
+                                                <option value="<?=$value_ss['ID'];?>"<?php if($value['column_type'] != 2){echo ' disabled="disabled"';};?><?php if($value_ss['ID'] == $news_info['ColumnID']){echo ' selected=""';};?>>　　　　└ <?=$value_ss['column_title'];?></option>
                                                 <?php endforeach;?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
@@ -180,12 +180,15 @@ function goSubmit(){
             $(".summernote").summernote({
                 lang:"zh-CN",
                 height: 350,
-                onImageUpload: function(files, editor, $editable) {
-                    UpladFile(files[0], editor, $editable);
+                callbacks: {
+                    onImageUpload: function(files) {
+                        UpladFile(files[0]);
+                    }
                 }
             });
         });
-        function UpladFile(file, editor, $editable){
+
+        function UpladFile(file){
             var fileObj = file;
             var FileController = siteUrl+"admin/fileupload/img_uoload/file/?timeStamp=" + new Date().getTime();//图片上传接口
             var form = new FormData();
@@ -196,7 +199,7 @@ function goSubmit(){
             xhr.onload = function () {
                 var data = new Function("return" + xhr.responseText)();//获取返回值
                 if(data.result){
-                    editor.insertImage($editable, data.img);
+                    $(".summernote").summernote('insertImage', data.img);
                 }else{
                     alert(data.error.replace(/<[^>]+>/g,""));
                 }
