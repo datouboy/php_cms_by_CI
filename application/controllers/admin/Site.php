@@ -21,7 +21,7 @@ class Site extends CI_Controller {
 
 		$data['siteurl'] = base_url();
 		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
-		$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
+		//$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
 		$this->load->model('Nommon_m');
 
 		//获取导航栏数组
@@ -114,7 +114,7 @@ class Site extends CI_Controller {
 
 		$data['siteurl'] = base_url();
 		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
-		$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
+		//$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
 		$this->load->model('Nommon_m');
 
 		$data['column_inof'] = $this->Nommon_m->select_content('column', '*', $id);
@@ -154,6 +154,79 @@ class Site extends CI_Controller {
 		}
 
 		redirect(base_url().'admin/site/navigation_list/');
+	}
+
+	//网站SEO配置
+	public function site_seo()
+	{
+		if(!$this->_loginIn()){redirect($this->loginPage);}
+
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+		//$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
+		$this->load->model('Nommon_m');
+
+		$data['seoInfo'] = $this->Nommon_m->select_content('siteinfo', '*', 1);
+
+		$this->load->view('admin/seo_edit', $data);
+	}
+
+	//网站SEO配置,修改数据
+	public function site_seopost()
+	{
+		if(!$this->_loginIn()){redirect($this->loginPage);}
+		header('Content-Type: text/html; charset=utf-8');
+		$this->load->model('Nommon_m');
+
+		$param['Title']       = $this->input->post('Title');
+		$param['Keywords']    = $this->input->post('Keywords');
+		$param['Description'] = $this->input->post('Description');
+
+		$this->Nommon_m->updata('siteinfo', array('ID'=>1), $param);
+
+		redirect(base_url().'admin/site/site_seo/');
+	}
+
+	//管理员修改密码
+	public function admin_edit_pw()
+	{
+		if(!$this->_loginIn()){redirect($this->loginPage);}
+
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+		//$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
+
+		$this->load->view('admin/admin_pw_edit', $data);
+	}
+
+	//管理员修改密码，写入数据
+	public function admin_edit_pwpost()
+	{
+		if(!$this->_loginIn()){redirect($this->loginPage);}
+		header('Content-Type: text/html; charset=utf-8');
+		$this->load->model('Admin_user_m');
+		$this->Admin_user_m->updata_admin_password($this->session->userdata('AdminID'), $this->input->post('newPassword'));
+		//redirect(base_url().'admin/site/admin_edit_pw/');
+
+		$newdata = array('AdminLogin', 'AdminID', 'AdminName', 'AdminPower');
+		$this->session->unset_userdata($newdata);
+		redirect(base_url().'admin/root/');
+	}
+
+	//验证管理员密码
+	public function checked_admin_pw()
+	{
+		header('Content-Type: text/html; charset=utf-8');
+
+		$param['Password'] = $this->input->post('oldPassword');
+		$this->load->model('Admin_user_m');
+
+		$adminInfo = $this->Admin_user_m->select_admin_info($this->session->userdata('AdminName'), $param['Password']);
+		if($adminInfo === false){
+			echo json_encode(array ('result'=>false,'error'=>"原密码错误！"));
+		}else{
+			echo json_encode(array ('result'=>true,'error'=>""));
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////

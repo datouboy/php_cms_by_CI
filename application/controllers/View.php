@@ -19,6 +19,17 @@ class View extends CI_Controller {
 		$data['topNavArray'] = $this->_get_nav_array(array(1));
 		$data['fotterNavArray'] = $this->_get_nav_array(array(2));
 
+		//为模版提供新闻列表输出接口
+		$data['showNewsList'] = function($id, $limit=10, $offset=0, $order_by='ASC'){
+			if($order_by == 'ASC'){
+				$order_by='ID ASC';
+			}else{
+				$order_by='ID DESC';
+			}
+			$getNewsList = $this->Nommon_m->select_list('newslist', '*', array('ColumnID' => $id), $limit, $offset, $order_by);
+			return $getNewsList;
+		};
+
 		$this->load->view('template/index', $data);//加载模板
 		
 	}

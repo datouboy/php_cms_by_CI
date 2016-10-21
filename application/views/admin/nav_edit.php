@@ -26,14 +26,14 @@ $cName = $this->uri->segment(2, 0);
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>编辑菜单</h5>
-                        <div class="ibox-tools">
+                        <!-- <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="ibox-content">
                         <form method="post" class="form-horizontal" action="<?=$siteurl;?>admin/site/navigation_editpost/<?=$column_id;?>/">
