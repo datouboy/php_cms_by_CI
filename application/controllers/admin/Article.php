@@ -78,7 +78,9 @@ class Article extends CI_Controller {
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
 		header('Content-Type: text/html; charset=utf-8');
-		$this->load->model('Nommon_m');
+		
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
 
 		$param['article_power']   = $this->input->post('article_power');
 		$param['article_show']    = $this->input->post('article_show');
@@ -87,7 +89,12 @@ class Article extends CI_Controller {
 
 		$this->Nommon_m->updata('article', array('ID'=>$id), $param);
 
-		redirect(base_url().'admin/article/article_list/');
+		//redirect(base_url().'admin/article/article_list/');
+		$data['goPage'] = array(
+			'url' => base_url().'admin/article/article_list/',
+			'text' => '文章编辑'
+		);
+		$this->load->view('admin/goto_page', $data);
 	}
 
 	//新闻列表
@@ -186,7 +193,9 @@ class Article extends CI_Controller {
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
-		header('Content-Type: text/html; charset=utf-8');
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
 		$this->load->model('Nommon_m');
 
 		$param['ColumnID']  = $this->input->post('ColumnID');
@@ -205,7 +214,12 @@ class Article extends CI_Controller {
 
 		$this->Nommon_m->insert('newslist', $param);
 
-		redirect(base_url().'admin/article/news_list/');
+		//redirect(base_url().'admin/article/news_list/');
+		$data['goPage'] = array(
+			'url' => base_url().'admin/article/news_list/',
+			'text' => '新闻发布'
+		);
+		$this->load->view('admin/goto_page', $data);
 	}
 
 	//编辑新闻,接受Post
@@ -213,7 +227,9 @@ class Article extends CI_Controller {
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
-		header('Content-Type: text/html; charset=utf-8');
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
 		$this->load->model('Nommon_m');
 
 		$param['ColumnID']  = $this->input->post('ColumnID');
@@ -232,7 +248,12 @@ class Article extends CI_Controller {
 
 		$this->Nommon_m->updata('newslist', array('ID'=>$id), $param);
 
-		redirect(base_url().'admin/article/news_list/');
+		//redirect(base_url().'admin/article/news_list/');
+		$data['goPage'] = array(
+			'url' => base_url().'admin/article/news_list/',
+			'text' => '新闻编辑'
+		);
+		$this->load->view('admin/goto_page', $data);
 	}
 
 	//删除新闻

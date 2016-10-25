@@ -35,7 +35,9 @@ class Site extends CI_Controller {
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
-		header('Content-Type: text/html; charset=utf-8');
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+		
 		$param['column_title']     = $this->input->post('column_title');
 		$param['column_parent']    = $this->input->post('column_parent');
 		$param['column_type']      = $this->input->post('column_type');
@@ -55,7 +57,13 @@ class Site extends CI_Controller {
 					'article_time' => time()
 				);
 			$this->Nommon_m->insert('article', $param_article);
-			redirect(base_url().'admin/site/navigation_list/');
+			//redirect(base_url().'admin/site/navigation_list/');
+
+			$data['goPage'] = array(
+				'url' => base_url().'admin/site/navigation_list/',
+				'text' => '新增导航'
+			);
+			$this->load->view('admin/goto_page', $data);
 		}else{
 			print_r($yz);
 		}
@@ -65,7 +73,9 @@ class Site extends CI_Controller {
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 
-		header('Content-Type: text/html; charset=utf-8');
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
 		$param['column_title']     = $this->input->post('column_title');
 		$param['column_parent']    = $this->input->post('column_parent');
 		$param['column_type']      = $this->input->post('column_type');
@@ -80,7 +90,13 @@ class Site extends CI_Controller {
 		if($yz === true){
 			$this->load->model('Nommon_m');
 			$this->Nommon_m->updata('column', array('ID'=>$id), $param);
-			redirect(base_url().'admin/site/navigation_list/');
+			//redirect(base_url().'admin/site/navigation_list/');
+
+			$data['goPage'] = array(
+				'url' => base_url().'admin/site/navigation_list/',
+				'text' => '导航更新'
+			);
+			$this->load->view('admin/goto_page', $data);
 		}else{
 			print_r($yz);
 		}
@@ -175,8 +191,9 @@ class Site extends CI_Controller {
 	public function site_seopost()
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
-		header('Content-Type: text/html; charset=utf-8');
-		$this->load->model('Nommon_m');
+
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
 
 		$param['Title']       = $this->input->post('Title');
 		$param['Keywords']    = $this->input->post('Keywords');
@@ -184,7 +201,12 @@ class Site extends CI_Controller {
 
 		$this->Nommon_m->updata('siteinfo', array('ID'=>1), $param);
 
-		redirect(base_url().'admin/site/site_seo/');
+		//redirect(base_url().'admin/site/site_seo/');
+		$data['goPage'] = array(
+			'url' => base_url().'admin/site/site_seo/',
+			'text' => '内容更新'
+		);
+		$this->load->view('admin/goto_page', $data);
 	}
 
 	//管理员修改密码
@@ -203,14 +225,23 @@ class Site extends CI_Controller {
 	public function admin_edit_pwpost()
 	{
 		if(!$this->_loginIn()){redirect($this->loginPage);}
-		header('Content-Type: text/html; charset=utf-8');
+
+		$data['siteurl'] = base_url();
+		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
 		$this->load->model('Admin_user_m');
 		$this->Admin_user_m->updata_admin_password($this->session->userdata('AdminID'), $this->input->post('newPassword'));
 		//redirect(base_url().'admin/site/admin_edit_pw/');
 
 		$newdata = array('AdminLogin', 'AdminID', 'AdminName', 'AdminPower');
 		$this->session->unset_userdata($newdata);
-		redirect(base_url().'admin/root/');
+		//redirect(base_url().'admin/root/');
+
+		$data['goPage'] = array(
+			'url' => base_url().'admin/root/',
+			'text' => '密码修改'
+		);
+		$this->load->view('admin/goto_page', $data);
 	}
 
 	//验证管理员密码
