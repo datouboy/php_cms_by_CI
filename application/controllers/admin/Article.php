@@ -145,7 +145,7 @@ class Article extends CI_Controller {
 		$this->pagination->initialize($config); 
 		$data['pagefen'] = $this->pagination->create_links();
 
-		$select = 'ID,ColumnID,Title,Pic,Power,Showpage,Templet,EditTime';
+		$select = 'ID,ColumnID,Title,Pic,Power,Showpage,Templet,Focus,Hot,EditTime';
 
 		$otherInfo = array(
 			array(

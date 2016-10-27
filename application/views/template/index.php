@@ -15,21 +15,13 @@
             <div class="col-md-6 col-sm-12">
                 <h2 class="block_title more">SEMI 新闻</h2>
                 <ul class="new_list">
+                    <?php foreach ($showNewsList(21,false,true,3) as $key => $value):?>
                     <li>
-                        <div class="news_img"><a href="#"><img src="images/test/news.jpg" /></a></div>
-                        <h4 class="news_title"><a href="#">SEMI中国光标委批准发布6项中文版光伏标准</a></h4>
-                        <div class="news_con"><p>SEMI中国光伏标准技术委员会（以下简称“光标委”）2016年度夏季会议7月29日在银川国际交流中心酒店顺利召开。会议由委员会联合主席张光春（阿特斯阳光电力集团首席运营官）先生主持，来自保利协鑫、天合光能、晶澳太阳能、英利集团、大连连城、中利腾晖...</p></div>
+                        <div class="news_img"><a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><img src="images/admin_upload/<?=$value['Pic_s'];?>" /></a></div>
+                        <h4 class="news_title"><a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><?=$SubString($value['Title'],30);?></a></h4>
+                        <div class="news_con"><p><?=$SubString($value['Introduced'],180);?></p></div>
                     </li>
-                    <li>
-                        <div class="news_img"><a href="#"><img src="images/test/news.jpg" /></a></div>
-                        <h4 class="news_title"><a href="#">SEMI中国光标委批准发布6项中文版光伏标准</a></h4>
-                        <div class="news_con"><p>SEMI中国光伏标准技术委员会（以下简称“光标委”）2016年度夏季会议7月29日在银川国际交流中心酒店顺利召开。会议由委员会联合主席张光春（阿特斯阳光电力集团首席运营官）先生主持，来自保利协鑫、天合光能、晶澳太阳能、英利集团、大连连城、中利腾晖...</p></div>
-                    </li>
-                    <li>
-                        <div class="news_img"><a href="#"><img src="images/test/news.jpg" /></a></div>
-                        <h4 class="news_title"><a href="#">SEMI中国光标委批准发布6项中文版光伏标准</a></h4>
-                        <div class="news_con"><p>SEMI中国光伏标准技术委员会（以下简称“光标委”）2016年度夏季会议7月29日在银川国际交流中心酒店顺利召开。会议由委员会联合主席张光春（阿特斯阳光电力集团首席运营官）先生主持，来自保利协鑫、天合光能、晶澳太阳能、英利集团、大连连城、中利腾晖...</p></div>
-                    </li>
+                    <?php endforeach;?>
                 </ul>
                 <a href="#" class="more">更多SEMI新闻</a>
             </div>
@@ -37,27 +29,15 @@
                 <h2 class="block_title more">焦点</h2>
                 <div class="swiper-container" id="focus_swiper">
                     <div class="swiper-wrapper">
+                        <?php foreach ($showNewsList('*',true,false,3) as $key => $value):?>
                         <div class="swiper-slide">
-                            <a href="#"><img src="images/test/focus_img.jpg" width="100%" /></a>
+                            <a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><img src="images/admin_upload/<?=$value['Pic'];?>" width="100%" /></a>
                             <div class="focus_info_box">
-                                <h3><a href="#">SEMI：2016年1月北美半导体设备B/B值为1.08</a></h3>
-                                <a href="#">SEMI（国际半导体产业协会）公布最新Book-to-Bill订单出货报告，2016年1月北美半导体设备制造商平均订单金额为13.2亿美元，B/B值（Book-to-Bill Ratio…Read More</a>
+                                <h3><a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><?=$SubString($value['Title'],30);?></a></h3>
+                                <a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><?=$SubString($value['Introduced'],180);?></a>
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <a href="#"><img src="images/test/focus_img1.jpg" width="100%" /></a>
-                            <div class="focus_info_box">
-                                <h3><a href="#">SEMI：2016年1月北美半导体设备B/B值为1.08</a></h3>
-                                <a href="#">SEMI（国际半导体产业协会）公布最新Book-to-Bill订单出货报告，2016年1月北美半导体设备制造商平均订单金额为13.2亿美元，B/B值（Book-to-Bill Ratio…Read More</a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#"><img src="images/test/focus_img2.jpg" width="100%" /></a>
-                            <div class="focus_info_box">
-                                <h3><a href="#">SEMI：2016年1月北美半导体设备B/B值为1.08</a></h3>
-                                <a href="#">SEMI（国际半导体产业协会）公布最新Book-to-Bill订单出货报告，2016年1月北美半导体设备制造商平均订单金额为13.2亿美元，B/B值（Book-to-Bill Ratio…Read More</a>
-                            </div>
-                        </div>
+                        <?php endforeach;?>
                     </div>
                     <div class="swiper-button-prev" id="focus_prev"></div>
                     <div class="swiper-button-next" id="focus_next"></div>
@@ -67,14 +47,9 @@
                 <h2 class="block_title">SEMI中国活动</h2>
             </div>
             <div class="col-md-8 col-sm-8">
-                <div class="china_events"><a href="#">SEMI中国平板显示产业冬季聚会南京顺利召开</a></div>
-                <div class="china_events"><a href="#">SEMI中国光标委首次发布3项中文版光伏标准</a></div>
-                <div class="china_events"><a href="#">SEMI中国封测委第九次会议聚焦并购、智造、人才</a></div>
-                <div class="china_events"><a href="#">升级强化中国半导体制造产业链--记2015北京微电子国际研讨会先进IC制造与技术论坛</a></div>
-                <div class="china_events"><a href="#">SEMI主张：做大做强中国集成电路产业链</a></div>
-                <div class="china_events"><a href="#">SEMI中国触摸屏顾问委员会第三次会议苏州召开 助力触控行业新发展</a></div>
-                <div class="china_events"><a href="#">SEMI中国2015访日代表团的发掘之旅</a></div>
-                <div class="china_events"><a href="#">SEMI中国组团与欧洲MEMS公司深度交流</a></div>
+                <?php foreach ($showNewsList(9,true,true,8) as $key => $value):?>
+                <div class="china_events"><a href="<?=$siteurl;?>news/article/<?=$value['ID'];?>"><?=$SubString($value['Title'],30);?></a></div>
+                <?php endforeach;?>
                 <p><a href="#">更多中国产业动态</a></p>
             </div>
             <div class="col-md-4 col-sm-4">

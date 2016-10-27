@@ -45,14 +45,39 @@ class News extends CI_Controller {
 			$templet = 'index_marketInfo';
 		}
 
+		//中文截词
+		$data['SubString'] = function($str, $num){
+			return $this->dboysclass->SubString($str,$num);
+		};
 		//为模版提供新闻列表输出接口
-		$data['showNewsList'] = function($id, $limit=10, $offset=0, $order_by='ASC'){
+		$data['showNewsList'] = function($id='*', $focus=false, $hot=false, $limit=10, $offset=0, $order_by='DESC'){
 			if($order_by == 'ASC'){
 				$order_by='ID ASC';
 			}else{
 				$order_by='ID DESC';
 			}
-			$getNewsList = $this->Nommon_m->select_list('newslist', '*', array('ColumnID' => $id), $limit, $offset, $order_by);
+			$selectArray = array ();
+			if(gettype($focus)!='boolean'){
+				$focus = 2;
+			}else{
+				if($focus == true){
+					$selectArray['Focus'] = '1';
+				}
+			}
+			if(gettype($hot)!='boolean'){
+				$hot = 2;
+			}else{
+				if($hot == true){
+					$selectArray['Hot'] = '1';
+				}
+			}
+			if($id!='*'){
+				$selectArray['ColumnID'] = $id;
+			}
+			$getNewsList = $this->Nommon_m->select_list('newslist', '*', $selectArray, $limit, $offset, $order_by);
+			foreach ($getNewsList as $key => $value) {
+				$getNewsList[$key]['Pic_s'] = preg_replace("#_s\.#", "_sf.", $value['Pic']);
+			}
 			return $getNewsList;
 		};
 

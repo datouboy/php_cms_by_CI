@@ -24,7 +24,8 @@ $cName = $this->uri->segment(2, 0);
 <script type="text/javascript">
 function goSubmit(){
     $('#article_content').val($('.summernote').summernote('code'));
-    $('#articleEdit').submit();
+    //$('#articleEdit').submit();
+    $('#submitGo').click();
 }
 function delcfm(id){
     if (confirm('确认删除？')) {
@@ -105,6 +106,10 @@ function delcfm(id){
                                             1 => '待发布',
                                             2 => '已发布'
                                         );
+                                    $yesNo = array(
+                                            1 => '是',
+                                            2 => '否'
+                                        );
                                     ?>
                                     <table class="table table-striped">
                                         <thead>
@@ -113,6 +118,8 @@ function delcfm(id){
                                                 <th>新闻标题</th>
                                                 <th>所属栏目</th>
                                                 <th>模版</th>
+                                                <th>焦点</th>
+                                                <th>热点</th>
                                                 <th>浏览权限</th>
                                                 <th>发布状态</th>
                                                 <th>最后编辑时间</th>
@@ -126,6 +133,8 @@ function delcfm(id){
                                                 <td><?=$item['Title'];?></td>
                                                 <td><?=$item['More_column']['column_title'];?></td>
                                                 <td><?=$item['Templet'];?></td>
+                                                <td><?=$yesNo[$item['Focus']];?></td>
+                                                <td><?=$yesNo[$item['Hot']];?></td>
                                                 <td><?=$article_power[$item['Power']];?></td>
                                                 <td><?=$article_show[$item['Showpage']];?></td>
                                                 <td><?=date('Y-m-d H:i', $item['EditTime']);?></td>
@@ -248,6 +257,7 @@ function delcfm(id){
                                         <div class="col-sm-4 col-sm-offset-2">
                                             <button class="btn btn-primary" type="button" onclick="goSubmit();">提交</button>
                                             <button class="btn btn-white" type="resert">取消</button>
+                                            <button id="submitGo" class="btn btn-primary" type="submit" style="display:none;">提交</button>
                                         </div>
                                     </div>
                                 </form>

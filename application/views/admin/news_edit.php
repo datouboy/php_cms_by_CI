@@ -25,7 +25,8 @@ $cName = $this->uri->segment(2, 0);
 <script type="text/javascript">
 function goSubmit(){
     $('#article_content').val($('.summernote').summernote('code'));
-    $('#articleEdit').submit();
+    //$('#articleEdit').submit();
+    $('#submitGo').click();
 }
 </script>
 <body class="gray-bg">
@@ -151,6 +152,7 @@ function goSubmit(){
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="button" onclick="goSubmit();">提交</button>
                                     <button class="btn btn-white" type="button" onclick="window.location='<?=$siteurl;?>admin/article/news_list/'">取消</button>
+                                    <button id="submitGo" class="btn btn-primary" type="submit" style="display:none;">提交</button>
                                 </div>
                             </div>
                         </form>
