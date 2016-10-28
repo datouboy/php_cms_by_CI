@@ -259,6 +259,118 @@ class Site extends CI_Controller {
 			echo json_encode(array ('result'=>true,'error'=>""));
 		}
 	}
+
+    //管理员列表
+    public function admin_list()
+    {
+        if(!$this->_loginIn()){redirect($this->loginPage);}
+
+        $data['siteurl'] = base_url();
+        $data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
+        $data['adminNav'] = $this->_set_leftNav();//管理员菜单
+
+        $this->load->model('Nommon_m');
+        $this->load->library('pagination');//加载翻页类
+        $config = $this->_page_fen();
+        $config['base_url'] = $data['siteurl'] . 'admin/site/admin_list/';
+        $config['total_rows'] = $this->Nommon_m->select_count('admin');
+        $config['uri_segment'] = 4;
+        $this->pagination->initialize($config); 
+        $data['pagefen'] = $this->pagination->create_links();
+
+        $select = 'ID,Name,FunPower,RegTime';
+
+        $data['adminArray'] = $this->Nommon_m->select_list('admin', $select, array('Power'=>8), $config['per_page'], $this->uri->segment(4), 'ID DESC');
+
+        $this->load->view('admin/admin_table', $data);
+    }
+
+    //添加管理员，写入数据
+    public function admin_addpost()
+    {
+        if(!$this->_loginIn()){redirect($this->loginPage);}
+
+        $data['siteurl'] = base_url();
+        $data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
+        $this->load->model('Nommon_m');
+        $this->load->model('Admin_user_m');
+
+        $param['Name']      = $this->input->post('Name');
+        $param['Password']  = $this->Admin_user_m->_get_md5_password($this->input->post('Password'));
+        $param['FunPower']  = json_encode($this->input->post('FunPower'));
+        $param['Power']     = 8;
+        $param['RegTime']   = time();
+
+        $this->Nommon_m->insert('admin', $param);
+
+        $data['goPage'] = array(
+            'url' => base_url().'admin/site/admin_list/',
+            'text' => '添加管理员'
+        );
+        $this->load->view('admin/goto_page', $data);
+    }
+
+    //管理员编辑
+    public function admin_edit($id)
+    {
+        if(!$this->_loginIn()){redirect($this->loginPage);}
+
+        $data['siteurl'] = base_url();
+        $data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+        $data['adminNav'] = $this->_set_leftNav();//管理员菜单
+
+        $this->load->model('Nommon_m');
+
+        $data['adminInfo'] = $this->Nommon_m->select_content('admin', '*', $id);
+        if($data['adminInfo']['FunPower'] == '' || $data['adminInfo']['FunPower'] == null || $data['adminInfo']['FunPower'] == 'null'){
+            $data['adminInfo']['FunPower'] = array();
+        }else{
+            $data['adminInfo']['FunPower'] = json_decode($data['adminInfo']['FunPower']);
+        }
+
+        $this->load->view('admin/admin_edit', $data);
+    }
+
+    //管理员编辑，写入数据
+    public function admin_editpost($id)
+    {
+        if(!$this->_loginIn()){redirect($this->loginPage);}
+
+        $data['siteurl'] = base_url();
+        $data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+
+        $this->load->model('Nommon_m');
+        $this->load->model('Admin_user_m');
+
+        if($this->input->post('Password') != '' && $this->input->post('Password') != null){
+            $param['Password']  = $this->Admin_user_m->_get_md5_password($this->input->post('Password'));
+        }
+        if($this->input->post('FunPower') == ''){
+            $param['FunPower'] = null;
+        }else{
+            $param['FunPower'] = json_encode($this->input->post('FunPower'));
+        }
+
+        $this->Nommon_m->updata('admin', array('ID'=>$id), $param);
+
+        $data['goPage'] = array(
+            'url' => base_url().'admin/site/admin_list/',
+            'text' => '编辑管理员'
+        );
+        $this->load->view('admin/goto_page', $data);
+    }
+
+    //删除管理员
+    public function admin_del($id)
+    {
+        if(!$this->_loginIn()){redirect($this->loginPage);}
+        header('Content-Type: text/html; charset=utf-8');
+        $this->load->model('Nommon_m');
+        $this->Nommon_m->del('admin', array('ID'=>$id));
+        redirect(base_url().'admin/site/admin_list/');
+    }
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -284,32 +396,31 @@ class Site extends CI_Controller {
 	}
 
 	private function _page_fen(){//翻页配置
-		$config['full_tag_open'] = '<ul class="pagefen"><li class="start"></li>';
-		$config['full_tag_close'] = '<li class="end"></li></ul>';
-		$config['first_link'] = '第一页';
-		$config['last_link'] = '最后页';
-		$config['num_links'] = 4;//调整数字出现的个数
-		$config['uri_segment'] = 4;
-		$config['next_link'] = '下一页';
-		$config['prev_link'] = '上一页';
-		$config['prev_tag_open'] = '<li>';
-		$config['prev_tag_close'] = '</li>';
-		$config['next_tag_open'] = '<li>';
-		$config['next_tag_close'] = '</li>';
-		$config['num_tag_open'] = '<li>';
-		$config['num_tag_close'] = '</li>';
-		$config['first_tag_open'] = '<li>';
-		$config['first_tag_close'] = '</li>';
-		$config['last_tag_open'] = '<li>';
-		$config['last_tag_close'] = '</li>';
-		$config['cur_tag_open'] = '<li><strong>';
-		$config['cur_tag_close'] = '</strong></li>';
-		$config['base_url'] = '';
-		$config['total_rows'] = '';
-		$config['per_page'] = 10;//设置每页显示条数
-
-		return $config;
-	}
+        $config['full_tag_open'] = '<ul class="pagefen">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = '第一页';
+        $config['last_link'] = '最后页';
+        $config['num_links'] = 4;//调整数字出现的个数
+        $config['uri_segment'] = 4;
+        $config['next_link'] = '下一页';
+        $config['prev_link'] = '上一页';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['first_tag_open'] = '<li class="first">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="last">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li><strong>';
+        $config['cur_tag_close'] = '</strong></li>';
+        $config['base_url'] = '';
+        $config['total_rows'] = '';
+        $config['per_page'] = 15;//设置每页显示条数
+        return $config;
+    }
 
 	private function _get_nav_list(){
 		$this->load->model('Nommon_m');

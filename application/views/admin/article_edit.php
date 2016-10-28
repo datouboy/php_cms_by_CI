@@ -51,7 +51,7 @@ function goSubmit(){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">菜单名称：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" disabled="" placeholder="已被禁用" class="form-control" value="<?=$article['More_column']['column_title'];?>">
+                                    <input type="text" disabled="" placeholder="" class="form-control" value="<?=$article['More_column']['column_title'];?>">
                                 </div>
                             </div>
                             <div class="form-group">

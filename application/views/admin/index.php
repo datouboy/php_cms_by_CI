@@ -38,7 +38,7 @@ $cName = $this->uri->segment(2, 0);
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold"><?=$this->session->userdata('AdminName');?></strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                <span class="text-muted text-xs block"><?php if($adminInfo['Power'] == 9):?>超级管理员<?php else:?>管理员<?php endif;?><b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -78,9 +78,8 @@ $cName = $this->uri->segment(2, 0);
                     
                     </li> -->
                     <?php foreach($leftNav as $key=>$item):?>
-                    <?php if($item['setup']['display'] && in_array($this->session->userdata('AdminPower'), $item['setup']['power'])):?>
+                    <?php if(($item['setup']['display'] && in_array($item['setup']['link'], $adminInfo['FunPower'])) || $adminInfo['Power'] == 9):?>
                     <li>
-                        <!-- <a href="javascript:void(0)"><?php echo $item['setup']['title'];?></a> -->
                         <a href="#">
                             <i class="fa <?php echo $item['setup']['icon'];?>"></i>
                             <span class="nav-label"><?php echo $item['setup']['title'];?></span>
@@ -88,20 +87,13 @@ $cName = $this->uri->segment(2, 0);
                         </a>
                         <ul class="nav nav-second-level">
                             <?php foreach($item['nav'] as $key_s=>$item_s):?>
-                            <?php if($item_s['display'] && in_array($this->session->userdata('AdminPower'), $item_s['power'])):?>
+                            <?php if(($item_s['display'] && in_array($item_s['link'], $adminInfo['FunPower'])) || $adminInfo['Power'] == 9):?>
                             <li>
                                 <a class="J_menuItem" href="<?=$siteurl;?>admin/<?php echo $item['setup']['link'];?>/<?php echo $item_s['link'];?>/"><?php echo $item_s['title'];?></a>
                             </li>
                             <?php endif;?>
                             <?php endforeach;?>
                         </ul>
-                      <!-- <ul>
-                        <?php foreach($item['nav'] as $key_s=>$item_s):?>
-                        <?php if($item_s['display'] && in_array($this->session->userdata('AdminPower'), $item_s['power'])):?>
-                        <li><a<?php if($cName == $item_s['link'] || $hideTitle == $item_s['link'])echo' class="onthis"' ?> href="<?=$siteurl;?>admin/<?php echo $item['setup']['link'];?>/<?php echo $item_s['link'];?>/"><?php echo $item_s['title'];?></a></li>
-                        <?php endif;?>
-                        <?php endforeach;?>
-                      </ul> -->
                     </li>
                     <?php endif;?>
                     <?php endforeach;?>

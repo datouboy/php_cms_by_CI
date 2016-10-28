@@ -200,7 +200,7 @@ function delcfm(id){
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">链接名：</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="column_linktitle" class="form-control" placeholder="请输入文本"required="" minlength="3" maxlength="20">
+                                            <input type="text" name="column_linktitle" class="form-control" placeholder="请输入文本" required="" minlength="3" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -243,7 +243,7 @@ function delcfm(id){
                                     <div class="form-group">
                                         <div class="col-sm-4 col-sm-offset-2">
                                             <button class="btn btn-primary" type="submit">提交</button>
-                                            <button class="btn btn-white" type="resert">取消</button>
+                                            <button class="btn btn-white" type="reset">取消</button>
                                         </div>
                                     </div>
                                 </form>

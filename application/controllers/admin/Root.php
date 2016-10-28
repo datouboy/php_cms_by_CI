@@ -78,6 +78,15 @@ class Root extends CI_Controller {
 		$data['siteurl'] = base_url();
 		$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
 		$data['leftNav'] = $this->_set_leftNav();//设置左侧菜单
+
+		$this->load->model('Nommon_m');
+		$data['adminInfo'] = $this->Nommon_m->select_content('admin', 'Power,FunPower', $this->session->userdata('AdminID'));
+		if($data['adminInfo']['FunPower'] == '' || $data['adminInfo']['FunPower'] == null || $data['adminInfo']['FunPower'] == 'null'){
+            $data['adminInfo']['FunPower'] = array();
+        }else{
+            $data['adminInfo']['FunPower'] = json_decode($data['adminInfo']['FunPower']);
+        }
+
 		$this->load->view('admin/index', $data);
 	}
 
