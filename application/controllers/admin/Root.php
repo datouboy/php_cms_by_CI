@@ -22,11 +22,11 @@ class Root extends CI_Controller {
 
 	//管理员登录处理
 	public function loginfun(){
-		header('Content-Type: text/html; charset=utf-8');
 		$param['Name']     = $this->input->post('user_name');
 		$param['Password'] = $this->input->post('user_password');
 		$yz = $this->_admin_valid($param);//验证
 		if($yz === true){
+			header('Content-Type: text/html; charset=utf-8');
 			$this->load->model('Admin_user_m');
 			$adminInfo = $this->Admin_user_m->select_admin_info($param['Name'], $param['Password']);
 			if($adminInfo === false){
@@ -42,7 +42,14 @@ class Root extends CI_Controller {
 				redirect(base_url().'admin/root/home/');
 			}
 		}else{
-			print_r($yz);
+			$data['siteurl'] = base_url();
+			$data['siteInfo'] = $this->_get_siteInfo();//查询站点信息
+			//print_r($yz);
+			$data['goPage'] = array(
+				'url' => base_url().'admin/root/',
+				'text' => '用户名或密码'
+			);
+			$this->load->view('admin/goto_page_error', $data);
 		}
 	}
 

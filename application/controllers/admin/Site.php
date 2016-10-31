@@ -148,10 +148,17 @@ class Site extends CI_Controller {
 		if(!$this->_loginIn()){redirect($this->loginPage);}
 		header('Content-Type: text/html; charset=utf-8');
 		$this->load->model('Nommon_m');
+        $columnType = $this->Nommon_m->select_content('column', 'column_type', $id);
+        $columnType = $columnType['column_type'];
 		//删除菜单
 		$this->Nommon_m->del('column', array('ID'=>$id));
-		//删除菜单对应的文章
-		$this->Nommon_m->del('article', array('article_column_id'=>$id));
+        if($columnType == 1){
+    		//删除菜单对应的文章
+    		$this->Nommon_m->del('article', array('article_column_id'=>$id));
+        }else if($columnType == 2){
+            //删除菜单对应的新闻
+            $this->Nommon_m->del('newslist', array('ColumnID'=>$id));
+        }
 		redirect(base_url().'admin/site/navigation_list/');
 	}
 
@@ -426,16 +433,30 @@ class Site extends CI_Controller {
 		$this->load->model('Nommon_m');
 		//获取一级导航栏数组
 		$allNavArray = $this->Nommon_m->select_list('column', '*', array('column_parent'=>0), 200, 0, 'column_order ASC, ID ASC');
-		//获取二级导航数组
 		foreach ($allNavArray as $key => $value) {
+            //获取以一级菜单新闻栏目的新闻数
+            if($value['column_type'] == 2){
+                $allNavArray[$key]['newsNum'] = $this->Nommon_m->select_count('newslist',array('ColumnID' => $value['ID']));
+            }
+            //获取二级导航数组
 			$navArray = $this->Nommon_m->select_list('column', '*', array('column_parent'=>$value['ID']), 200, 0, 'column_order ASC, ID ASC');
 			if(count($navArray)>0){
 				$allNavArray[$key]['subMenu'] = $navArray;
-				//获取三级导航数组
 				foreach ($allNavArray[$key]['subMenu'] as $key_s => $value_s) {
+                    //获取以二级菜单新闻栏目的新闻数
+                    if($value_s['column_type'] == 2){
+                        $allNavArray[$key]['subMenu'][$key_s]['newsNum'] = $this->Nommon_m->select_count('newslist',array('ColumnID' => $value_s['ID']));
+                    }
+                    //获取三级导航数组
 					$navArray_s = $this->Nommon_m->select_list('column', '*', array('column_parent'=>$value_s['ID']), 200, 0, 'column_order ASC, ID ASC');
 					if(count($navArray_s)>0){
 						$allNavArray[$key]['subMenu'][$key_s]['subMenu'] = $navArray_s;
+                        foreach ($allNavArray[$key]['subMenu'][$key_s]['subMenu'] as $key_ss => $value_ss){
+                            //获取以三级菜单新闻栏目的新闻数
+                            if($value_ss['column_type'] == 2){
+                                $allNavArray[$key]['subMenu'][$key_s]['newsNum'][$key_ss]['newsNum'] = $this->Nommon_m->select_count('newslist',array('ColumnID' => $value_ss['ID']));
+                            }
+                        }
 					}else{
 						$allNavArray[$key]['subMenu'][$key_s]['subMenu'] = false;
 					}

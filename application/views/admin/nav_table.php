@@ -20,8 +20,13 @@ $cName = $this->uri->segment(2, 0);
 
 </head>
 <script language="javascript" type="text/javascript">
-function delcfm(id){
-    if (confirm('确认删除？')) {
+function delcfm(id,type){
+    if(type == 1){
+        var text = '确认删除？';
+    }else if(type == 2){
+        var text = '删除新闻栏目会自动删除此栏目下的新闻，确认删除？';
+    }
+    if (confirm(text)) {
         window.location='<?=$siteurl;?>admin/site/navigation_del/'+id+'/';
     }
 }
@@ -70,7 +75,7 @@ function delcfm(id){
                                             <?php foreach ($navArray as $key => $item):?>
                                                 <tr>
                                                     <td><?=$item['ID'];?></td>
-                                                    <td><?=$item['column_title'];?></td>
+                                                    <td><?=$item['column_title'];?> <?php if($item['column_type'] == 2):?><span style="color:red;">[<?=$item['newsNum'];?>篇新闻]</span><?php endif;?></td>
                                                     <td><?=$item['column_linktitle'];?></td>
                                                     <td><?=$item['column_templet'];?></td>
                                                     <td><?=$column_type_array[$item['column_type']];?></td>
@@ -89,14 +94,14 @@ function delcfm(id){
                                                     </th>
                                                     <td>
                                                         <a href="<?=$siteurl;?>admin/site/navigation_edit/<?=$item['ID'];?>/"><i class="fa fa-edit text-navy"></i></a>　
-                                                        <a href="javascript:void(0);" onclick="delcfm(<?=$item['ID'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
+                                                        <a href="javascript:void(0);" onclick="delcfm(<?=$item['ID'];?>,<?=$item['column_type'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php if($item['subMenu'] != false):?>
                                                 <?php foreach ($item['subMenu'] as $key_s => $item_s):?>
                                                     <tr>
                                                         <td><?=$item_s['ID'];?></td>
-                                                        <td>　　└ <?=$item_s['column_title'];?></td>
+                                                        <td>　　└ <?=$item_s['column_title'];?> <?php if($item_s['column_type'] == 2):?><span style="color:red;">[<?=$item_s['newsNum'];?>篇新闻]</span><?php endif;?></td>
                                                         <td><?=$item_s['column_linktitle'];?></td>
                                                         <td><?=$item_s['column_templet'];?></td>
                                                         <td><?=$column_type_array[$item_s['column_type']];?></td>
@@ -115,14 +120,14 @@ function delcfm(id){
                                                         </th>
                                                         <td>
                                                             <a href="<?=$siteurl;?>admin/site/navigation_edit/<?=$item_s['ID'];?>/"><i class="fa fa-edit text-navy"></i></a>　
-                                                            <a href="javascript:void(0);" onclick="delcfm(<?=$item_s['ID'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
+                                                            <a href="javascript:void(0);" onclick="delcfm(<?=$item_s['ID'];?>,<?=$item_s['column_type'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
                                                         </td>
                                                     </tr>
                                                     <?php if($item_s['subMenu'] != false):?>
                                                     <?php foreach ($item_s['subMenu'] as $key_ss => $item_ss):?>
                                                         <tr>
                                                             <td><?=$item_ss['ID'];?></td>
-                                                            <td>　　　　└ <?=$item_ss['column_title'];?></td>
+                                                            <td>　　　　└ <?=$item_ss['column_title'];?> <?php if($item_ss['column_type'] == 2):?><span style="color:red;">[<?=$item_ss['newsNum'];?>篇新闻]</span><?php endif;?></td>
                                                             <td><?=$item_ss['column_linktitle'];?></td>
                                                             <td><?=$item_ss['column_templet'];?></td>
                                                             <td><?=$column_type_array[$item_ss['column_type']];?></td>
@@ -141,7 +146,7 @@ function delcfm(id){
                                                             </th>
                                                             <td>
                                                                 <a href="<?=$siteurl;?>admin/site/navigation_edit/<?=$item_ss['ID'];?>/"><i class="fa fa-edit text-navy"></i></a>　
-                                                                <a href="javascript:void(0);" onclick="delcfm(<?=$item_ss['ID'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
+                                                                <a href="javascript:void(0);" onclick="delcfm(<?=$item_ss['ID'];?>,<?=$item_ss['column_type'];?>)"><i class="fa fa-trash-o text-navy"></i></a>
                                                             </td>
                                                         </tr>
                                                     <?php endforeach;?>
