@@ -75,7 +75,14 @@ function delcfm(id,type){
                                             <?php foreach ($navArray as $key => $item):?>
                                                 <tr>
                                                     <td><?=$item['ID'];?></td>
-                                                    <td><?=$item['column_title'];?> <?php if($item['column_type'] == 2):?><span style="color:red;">[<?=$item['newsNum'];?>篇新闻]</span><?php endif;?></td>
+                                                    <td>
+                                                        <?=$item['column_title'];?> 
+                                                        <?php if($item['column_type'] == 1):?>
+                                                            <span style="color:#999;">[<a href="<?=$siteurl;?>admin/article/article_edit/<?=$item['column_article_id'];?>/">编辑</a>]</span>
+                                                        <?php elseif($item['column_type'] == 2):?>
+                                                            <span style="color:red;">[<?=$item['newsNum'];?>篇新闻]</span>
+                                                        <?php endif;?>
+                                                    </td>
                                                     <td><?=$item['column_linktitle'];?></td>
                                                     <td><?=$item['column_templet'];?></td>
                                                     <td><?=$column_type_array[$item['column_type']];?></td>
@@ -101,7 +108,13 @@ function delcfm(id,type){
                                                 <?php foreach ($item['subMenu'] as $key_s => $item_s):?>
                                                     <tr>
                                                         <td><?=$item_s['ID'];?></td>
-                                                        <td>　　└ <?=$item_s['column_title'];?> <?php if($item_s['column_type'] == 2):?><span style="color:red;">[<?=$item_s['newsNum'];?>篇新闻]</span><?php endif;?></td>
+                                                        <td>　　└ <?=$item_s['column_title'];?> 
+                                                            <?php if($item_s['column_type'] == 1):?>
+                                                                <span style="color:#999;">[<a href="<?=$siteurl;?>admin/article/article_edit/<?=$item_s['column_article_id'];?>/">编辑</a>]</span>
+                                                            <?php elseif($item_s['column_type'] == 2):?>
+                                                                <span style="color:red;">[<?=$item_s['newsNum'];?>篇新闻]</span>
+                                                            <?php endif;?>
+                                                        </td>
                                                         <td><?=$item_s['column_linktitle'];?></td>
                                                         <td><?=$item_s['column_templet'];?></td>
                                                         <td><?=$column_type_array[$item_s['column_type']];?></td>
@@ -127,7 +140,13 @@ function delcfm(id,type){
                                                     <?php foreach ($item_s['subMenu'] as $key_ss => $item_ss):?>
                                                         <tr>
                                                             <td><?=$item_ss['ID'];?></td>
-                                                            <td>　　　　└ <?=$item_ss['column_title'];?> <?php if($item_ss['column_type'] == 2):?><span style="color:red;">[<?=$item_ss['newsNum'];?>篇新闻]</span><?php endif;?></td>
+                                                            <td>　　　　└ <?=$item_ss['column_title'];?> 
+                                                                <?php if($item_ss['column_type'] == 1):?>
+                                                                    <span style="color:#999;">[<a href="<?=$siteurl;?>admin/article/article_edit/<?=$item_ss['column_article_id'];?>/">编辑</a>]</span>
+                                                                <?php elseif($item_ss['column_type'] == 2):?>
+                                                                    <span style="color:red;">[<?=$item_ss['newsNum'];?>篇新闻]</span>
+                                                                <?php endif;?>
+                                                            </td>
                                                             <td><?=$item_ss['column_linktitle'];?></td>
                                                             <td><?=$item_ss['column_templet'];?></td>
                                                             <td><?=$column_type_array[$item_ss['column_type']];?></td>
@@ -194,12 +213,10 @@ function delcfm(id,type){
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">栏目类型：</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="column_type" required>
-                                                <option></option>
-                                                <option value="1">普通文章</option>
-                                                <option value="2">新闻</option>
-                                                <option value="3">活动</option>
-                                            </select>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="column_type" value="1" required="">普通文章</label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="column_type" value="2" required="">新闻</label>
                                         </div>
                                     </div>
                                     <div class="form-group">

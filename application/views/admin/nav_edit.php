@@ -73,12 +73,13 @@ $cName = $this->uri->segment(2, 0);
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">栏目类型：</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="column_type" required>
-                                        <option></option>
-                                        <option value="1"<?php if($column_inof['column_type']==1){echo '  selected=""';}?>>普通文章</option>
-                                        <option value="2"<?php if($column_inof['column_type']==2){echo '  selected=""';}?>>新闻</option>
-                                        <option value="3"<?php if($column_inof['column_type']==3){echo '  selected=""';}?>>活动</option>
-                                    </select>
+                                    <?php
+                                    $columnTypeArray = array(
+                                        1 => '普通文章',
+                                        2 => '新闻'
+                                    );
+                                    ?>
+                                    <input type="text" class="form-control" disabled="" placeholder="" required="" value="<?=$columnTypeArray[$column_inof['column_type']];?>">
                                 </div>
                             </div>
                             <div class="form-group">
