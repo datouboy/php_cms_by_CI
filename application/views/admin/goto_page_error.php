@@ -25,10 +25,10 @@ $cName = $this->uri->segment(2, 0);
     <div class="wrapper wrapper-content">
         <div class="row">
             <div class="col-sm-12">
-                <div class="middle-box text-center animated fadeInRightBig">
+                <div class="middle-box text-center">
                     <h3 class="font-bold">错误！</h3>
                     <div class="error-desc">
-                        <?=$goPage['text'];?>错误，<span id="num">3</span>秒后将自动跳转页面！
+                        <?=$goPage['text'];?>，<span id="num">3</span>秒后将自动跳转页面！
                         <br/><a href="<?=$goPage['url'];?>" class="btn btn-primary m-t">直接跳转</a>
                     </div>
                 </div>

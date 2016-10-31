@@ -51,6 +51,17 @@ class Site extends CI_Controller {
 		$yz = $this->_navigation_addpost_valid($param);//验证
 		if($yz === true){
 			$this->load->model('Nommon_m');
+
+            $repeatNum = $this->Nommon_m->select_count('column',array('column_linktitle' => $param['column_linktitle']));
+            if($repeatNum > 0){
+                $data['goPage'] = array(
+                    'url' => base_url().'admin/site/navigation_list/',
+                    'text' => '链接名重复'
+                );
+                $this->load->view('admin/goto_page_error', $data);
+                return false;
+            }
+
 			$column_id = $this->Nommon_m->insert('column', $param);
 			$param_article = array(
 					'article_column_id' => $column_id,
@@ -65,7 +76,12 @@ class Site extends CI_Controller {
 			);
 			$this->load->view('admin/goto_page', $data);
 		}else{
-			print_r($yz);
+			//print_r($yz);
+            $data['goPage'] = array(
+                'url' => base_url().'admin/site/navigation_list/',
+                'text' => $yz
+            );
+            $this->load->view('admin/goto_page_error', $data);
 		}
 	}
 	//编辑菜单，接收Post
@@ -89,6 +105,17 @@ class Site extends CI_Controller {
 		$yz = $this->_navigation_addpost_valid($param);//验证
 		if($yz === true){
 			$this->load->model('Nommon_m');
+
+            $repeatNum = $this->Nommon_m->select_count('column',array('column_linktitle' => $param['column_linktitle']));
+            if($repeatNum > 0){
+                $data['goPage'] = array(
+                    'url' => base_url().'admin/site/navigation_list/',
+                    'text' => '链接名重复'
+                );
+                $this->load->view('admin/goto_page_error', $data);
+                return false;
+            }
+
 			$this->Nommon_m->updata('column', array('ID'=>$id), $param);
 			//redirect(base_url().'admin/site/navigation_list/');
 
@@ -98,7 +125,12 @@ class Site extends CI_Controller {
 			);
 			$this->load->view('admin/goto_page', $data);
 		}else{
-			print_r($yz);
+			//print_r($yz);
+            $data['goPage'] = array(
+                'url' => base_url().'admin/site/navigation_list/',
+                'text' => $yz
+            );
+            $this->load->view('admin/goto_page_error', $data);
 		}
 	}
 	//新建导航栏，接收Post数据验证

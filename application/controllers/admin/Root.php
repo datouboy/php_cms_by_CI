@@ -47,7 +47,7 @@ class Root extends CI_Controller {
 			//print_r($yz);
 			$data['goPage'] = array(
 				'url' => base_url().'admin/root/',
-				'text' => '用户名或密码'
+				'text' => '用户名或密码错误'
 			);
 			$this->load->view('admin/goto_page_error', $data);
 		}
