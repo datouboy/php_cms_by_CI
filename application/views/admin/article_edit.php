@@ -82,7 +82,7 @@ function goSubmit(){
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="button" onclick="goSubmit();">提交</button>
-                                    <button class="btn btn-white" type="button" onclick="window.location='<?=$siteurl;?>admin/article/article_list/'">取消</button>
+                                    <button class="btn btn-white" type="button" onclick="javascript:history.go(-1);">取消</button>
                                     <button id="submitGo" class="btn btn-primary" type="submit" style="display:none;">提交</button>
                                 </div>
                             </div>
